@@ -8,15 +8,11 @@ services:
     depends_on:
       cardano:
         condition: service_healthy
-    command:
-      [
-        "bootstrap",
-        "--peer-address", "cardano:3001",
-        "--config-dir", "${CONFIG_FOLDER:-/opt/amaru/config}",
-        "--ledger-dir", "${LEDGER_DIR:-ledger.db}",
-        "--chain-dir", "${CHAIN_DIR:-chain.db}",
-        "--network", "${NETWORK?Define NETWORK in .env with a value supported by Amaru}",
-      ]
+    environment:
+      - NETWORK
+      - LEDGER_DIR
+      - CONFIG_FOLDER
+      - CHAIN_DIR
     volumes:
       - amaru_data:/srv/amaru
 

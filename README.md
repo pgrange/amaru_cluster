@@ -10,14 +10,16 @@ to run. Currently supported values are `preprod` and `preview`.
 ```
 
 Then run the following command to bootstrap the amaru node. This will take a
-while the first time as it will sync the cardano node with the network before
-starting Amaru:
+while the first time as it will, before starting Amaru:
+
+- sync the cardano node with the network
+- and then bootstrap Amaru
 
 ```bash
-#> docker compose up --build
+#> docker compose up --build amaru
 ```
 
 ## Current limitations
 
-⚠ This will only bootstrap Amaru. It will not run the Amaru node as a
-daemon.
+It only supports preprod and previez networks and switching from one to another
+is not convenient at this stage.

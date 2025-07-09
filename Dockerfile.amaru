@@ -9,3 +9,9 @@ RUN curl -L -o amaru.zip https://github.com/pragma-org/amaru/archive/refs/heads/
     && unzip amaru.zip \
     && cp -r amaru-main/data /opt/amaru/config \
     && rm -rf amaru.zip amaru-main
+
+# Setup start script
+COPY start_amaru.sh /usr/local/bin/start_amaru.sh
+RUN chmod +x /usr/local/bin/start_amaru.sh
+
+ENTRYPOINT ["start_amaru.sh"]
