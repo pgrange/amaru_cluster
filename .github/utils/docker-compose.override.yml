@@ -1,0 +1,7 @@
+services:
+  amaru:
+    volumes:
+      - ./_cache/amaru_data:/srv/amaru
+  cardano:
+    volumes:
+      - ./_cache/cardano_data:/data/db
