@@ -1,0 +1,40 @@
+name: Docker Compose CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  docker-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create cache folders
+        run: |
+          mkdir -p ./_cache/amaru_data
+          mkdir -p ./_cache/cardano_data
+
+      - name: Restore Docker volume data from cache
+        uses: actions/cache@v4
+        with:
+          path: ./_cache
+          key: docker-volumes
+
+      - name: Docker Compose up on preprod
+        env:
+          NETWORK: preprod
+        run: |
+          # docker compose version
+          # docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml pull
+          # docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml build
+          # docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml up -d
+          # docker compose logs -f | tee /dev/stderr | grep --line-buffered -m 1 "chain tip reached; awaiting next block"
+          echo coucou bidule truc | tee /dev/stderr | grep --line-buffered -m 1 "coucou"
+          echo stop
+          docker compose down
