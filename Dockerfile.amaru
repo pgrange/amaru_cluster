@@ -1,15 +1,5 @@
 FROM ghcr.io/blinklabs-io/amaru:main
 
-RUN apt-get update && apt-get install -y curl unzip \
- && rm -rf /var/lib/apt/lists/*
-
-# Import Amaru configuration files
-RUN mkdir -p /opt/amaru
-RUN curl -L -o amaru.zip https://github.com/pragma-org/amaru/archive/refs/heads/main.zip \
-    && unzip amaru.zip \
-    && cp -r amaru-main/data /opt/amaru/config \
-    && rm -rf amaru.zip amaru-main
-
 # Setup start script
 COPY start_amaru.sh /usr/local/bin/start_amaru.sh
 RUN chmod +x /usr/local/bin/start_amaru.sh

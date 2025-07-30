@@ -7,7 +7,7 @@ usage() {
 }
 
 LEDGER_DIR="${LEDGER_DIR:-ledger.db}"
-CONFIG_FOLDER="${CONFIG_FOLDER:-/opt/amaru/config}"
+CONFIG_FOLDER="${CONFIG_FOLDER:-/data}"
 CHAIN_DIR="${CHAIN_DIR:-chain.db}"
 
 [[ -z "$NETWORK" ]] && usage "Define NETWORK in .env with a value supported by Amaru"
