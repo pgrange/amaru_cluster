@@ -20,40 +20,32 @@ jobs:
           mkdir -p ./_cache/amaru_data
           mkdir -p ./_cache/cardano_data
 
-      - name: Restore Amaru data from cache
-        uses: actions/cache@v4
-        with:
-          path: ./_cache/amaru_data
-          key: amaru_data-${{ github.run_id }}
-          restore-keys: |
-            amaru_data
-
       - name: Restore Cardano data from cache
         uses: actions/cache@v4
         with:
           path: ./_cache/cardano_data
-          key: cardano_data-${{ github.run_id }}
+          key: cardano_data-mainnet-${{ github.run_id }}
           restore-keys: |
-            cardano_data
+            cardano_data-mainnet
 
       - name: Start Cardano and Amaru cluster
         env:
-          NETWORK: preprod
+          NETWORK: mainnet
         run: |
           docker compose version
           docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml pull
           docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml build
-          docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml up -d amaru
+          docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml up -d cardano
           docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml logs -f \
           | tee /dev/stderr \
           | (
-              grep --line-buffered -m1 "chain tip reached; awaiting next block"
+              grep --line-buffered -m1 "at slot 162304620"
               docker compose -f docker-compose.yml -f .github/utils/docker-compose.override.yml down
             )
 
       - name: Prune Cardano data
         env:
-          NETWORK: preprod
+          NETWORK: mainnet
         shell: bash
         working-directory: ./_cache/cardano_data
         run: |
@@ -65,13 +57,6 @@ jobs:
             rm -f immutable/0*.chunk immutable/10*.chunk immutable/11*.chunk
           fi
 
-      - name: Prune Amaru data
-        shell: bash
-        working-directory: ./_cache/amaru_data
-        run: |
-          ls -d ledger.db/[0-9]* | head -n -3 | xargs rm -rf
-          rm -rf snapshots
-
       - name: What are we about to save ?
         shell: bash
         run: |
@@ -82,9 +67,3 @@ jobs:
         with:
           name: cardano_data
           path: ./_cache/cardano_data
-
-      - name: Upload Amaru data
-        uses: actions/upload-artifact@v4
-        with:
-          name: amaru_data
-          path: ./_cache/amaru_data
