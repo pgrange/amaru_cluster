@@ -16,6 +16,26 @@ services:
     volumes:
       - amaru_data:/srv/amaru
 
+  amaru_2:
+    build:
+      context: .
+      dockerfile: Dockerfile.amaru
+    container_name: amaru_2
+    working_dir: /srv/amaru
+    depends_on:
+      cardano:
+        condition: service_healthy
+      amaru:
+        condition: service_started
+    environment:
+      - NETWORK
+      - LEDGER_DIR
+      - CONFIG_FOLDER
+      - CHAIN_DIR
+      - PEER_ADDRESS=amaru:3000
+    volumes:
+      - amaru_2_data:/srv/amaru
+
   cardano:
     image: ghcr.io/blinklabs-io/cardano-node
     container_name: cardano
@@ -41,3 +61,4 @@ services:
 volumes:
   amaru_data:
   cardano_data:
+  amaru_2_data:
