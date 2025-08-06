@@ -7,6 +7,7 @@ usage() {
 }
 
 PEER_ADDRESS="${PEER_ADDRESS:-cardano:3001}"
+BOOTSTRAP_PEER_ADDRESS="${BOOTSTRAP_PEER_ADDRESS:-${PEER_ADDRESS}}"
 LEDGER_DIR="${LEDGER_DIR:-ledger.db}"
 CONFIG_FOLDER="${CONFIG_FOLDER:-/data}"
 CHAIN_DIR="${CHAIN_DIR:-chain.db}"
@@ -16,7 +17,7 @@ CHAIN_DIR="${CHAIN_DIR:-chain.db}"
 if ! [ -d $LEDGER_DIR ]
 then
     amaru bootstrap \
-      --peer-address "${PEER_ADDRESS}" \
+      --peer-address "${BOOTSTRAP_PEER_ADDRESS}" \
       --config-dir "${CONFIG_FOLDER}" \
       --ledger-dir "${LEDGER_DIR}" \
       --chain-dir "${CHAIN_DIR}" \
