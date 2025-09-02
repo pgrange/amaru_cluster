@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.amaru
-    container_name: amaru
     working_dir: /srv/amaru
     depends_on:
       cardano:
@@ -20,7 +19,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.amaru
-    container_name: amaru_2
     working_dir: /srv/amaru
     depends_on:
       cardano:
@@ -38,7 +36,6 @@ services:
 
   cardano:
     image: ghcr.io/blinklabs-io/cardano-node
-    container_name: cardano
     environment:
       - NETWORK
     volumes:
@@ -53,7 +50,6 @@ services:
 
   debug:
     image: debian:latest
-    container_name: debian-container
     command: tail -f /dev/null # Waits forever for someone to exec into it
     profiles:
       - debug
